@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Credit Risk Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">💰 Credit Risk AI</div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#predict" class="nav-link">Predict</a></li>
+                <li><a href="#info" class="nav-link">Info</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>AI Credit Risk Management</h1>
+            <p>Intelligent Credit Risk Assessment Using Machine Learning</p>
+            <button class="cta-button" onclick="document.getElementById('predict').scrollIntoView({behavior: 'smooth'})">
+                Get Started
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Prediction Section -->
+        <section class="prediction-section" id="predict">
+            <div class="section-header">
+                <h2>🎯 Credit Risk Prediction</h2>
+                <p>Enter applicant details to assess credit risk</p>
+            </div>
+
+            <div class="content-wrapper">
+                <!-- Form -->
+                <div class="form-container">
+                    <h3>Applicant Information</h3>
+                    
+                    <!-- Basic Fields -->
+                    <div class="form-group">
+                        <label for="age">Age *</label>
+                        <input type="number" id="age" placeholder="Enter age" min="18" max="100">
+                        <small>Years old (18-100)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="income">Monthly Income *</label>
+                        <input type="number" id="income" placeholder="Enter monthly income" min="0" step="100">
+                        <small>Monthly income in dollars</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="credit_limit">Credit Limit *</label>
+                        <input type="number" id="credit_limit" placeholder="Enter credit limit" min="0" step="100">
+                        <small>Total available credit in dollars</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="debt_ratio">Debt-to-Income Ratio *</label>
+                        <input type="number" id="debt_ratio" placeholder="Enter ratio" min="0" max="10" step="0.1">
+                        <small>Total debt / Total income</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="monthly_debt">Monthly Debt Payments *</label>
+                        <input type="number" id="monthly_debt" placeholder="Enter monthly debt" min="0" step="10">
+                        <small>Total monthly debt payments in dollars</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="number_of_open_accounts">Number of Open Credit Accounts *</label>
+                        <input type="number" id="number_of_open_accounts" placeholder="Enter number" min="0" max="100">
+                        <small>Active credit accounts</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="number_of_times_90_days_late">Times 90 Days Late *</label>
+                        <input type="number" id="number_of_times_90_days_late" placeholder="0" min="0" max="50">
+                        <small>Number of times past due 90+ days</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age_of_credit_line">Age of Credit Line (Months) *</label>
+                        <input type="number" id="age_of_credit_line" placeholder="Enter months" min="0" step="1">
+                        <small>Months since oldest credit line opened</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="number_of_times_60_days_late">Times 60 Days Late *</label>
+                        <input type="number" id="number_of_times_60_days_late" placeholder="0" min="0" max="50">
+                        <small>Number of times past due 60+ days</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="number_of_dependents">Number of Dependents *</label>
+                        <input type="number" id="number_of_dependents" placeholder="0" min="0" max="20">
+                        <small>Family members depending on applicant</small>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="form-buttons">
+                        <button class="btn-primary" onclick="predictRisk()">
+                            🔍 Predict Risk
+                        </button>
+                        <button class="btn-secondary" onclick="clearForm()">
+                            🔄 Clear Form
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="results-container" id="results" style="display:none;">
+                    <h3>🎲 Prediction Results</h3>
+                    
+                    <div class="result-card" id="resultCard">
+                        <div class="score-display">
+                            <div class="risk-score" id="riskScore">0.000</div>
+                            <p class="score-label">Risk Score (0-1)</p>
+                        </div>
+
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <span class="label">Risk Level:</span>
+                                <span class="value" id="riskLevel">-</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <span class="label">Recommendation:</span>
+                                <span class="value" id="recommendation">-</span>
+                            </div>
+
+                            <div class="detail-item">
+                                <span class="label">Timestamp:</span>
+                                <span class="value" id="timestamp">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="risk-indicator" id="riskIndicator"></div>
+                </div>
+
+                <!-- Loading Indicator -->
+                <div class="loading" id="loading" style="display:none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing credit risk...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Information Section -->
+        <section class="info-section" id="info">
+            <div class="section-header">
+                <h2>ℹ️ About This System</h2>
+            </div>
+
+            <div class="info-cards">
+                <div class="card">
+                    <h3>🤖 Machine Learning</h3>
+                    <p>Powered by Random Forest algorithm trained on thousands of credit records for accurate risk assessment.</p>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Risk Scoring</h3>
+                    <p>
+                        <strong>Low Risk (0-0.3):</strong> Safe to approve<br>
+                        <strong>Medium Risk (0.3-0.6):</strong> Review carefully<br>
+                        <strong>High Risk (0.6-1.0):</strong> High probability of default
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>🔒 Data Privacy</h3>
+                    <p>All predictions are processed locally. Your data is not stored or shared with any third parties.</p>
+                </div>
+
+                <div class="card">
+                    <h3>⚡ Real-time</h3>
+                    <p>Get instant credit risk predictions in seconds. Perfect for lending decisions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Status -->
+        <section class="status-section">
+            <h3>System Status</h3>
+            <p id="statusMessage">Checking backend connection...</p>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 AI Credit Risk Management System | Built with Python, Flask & ML</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
